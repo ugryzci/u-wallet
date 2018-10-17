@@ -3,7 +3,6 @@ package com.uguryazici.uwallet.service;
 import com.uguryazici.uwallet.entity.Account;
 
 import java.math.BigDecimal;
-import java.nio.channels.AcceptPendingException;
 import java.util.Optional;
 
 public interface AccountService {

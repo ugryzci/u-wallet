@@ -1,12 +1,9 @@
 package com.uguryazici.uwallet.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.Optional;
 
 @Entity
 public class Account {

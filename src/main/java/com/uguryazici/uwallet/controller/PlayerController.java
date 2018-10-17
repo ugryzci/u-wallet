@@ -1,8 +1,6 @@
 package com.uguryazici.uwallet.controller;
 
-import com.uguryazici.uwallet.entity.Account;
 import com.uguryazici.uwallet.entity.Player;
-import com.uguryazici.uwallet.entity.Transaction;
 import com.uguryazici.uwallet.exception.PlayerNotFoundException;
 import com.uguryazici.uwallet.model.PlayerDTO;
 import com.uguryazici.uwallet.service.PlayerService;
@@ -11,8 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.EntityNotFoundException;
-import java.util.List;
 import java.util.Optional;
 
 @ControllerAdvice
@@ -39,7 +35,6 @@ public class PlayerController {
         return new ResponseEntity<>("Player Deleted.",HttpStatus.OK);
     }
 
-    @ExceptionHandler(EntityNotFoundException.class)
     @GetMapping(path = "/list")
     public ResponseEntity<Iterable<Player>> listPlayer() {
         Iterable<Player> all = playerService.findAll();
@@ -55,7 +50,7 @@ public class PlayerController {
             throw new PlayerNotFoundException();
         }
 
-        return new ResponseEntity<Player>(player.get(), HttpStatus.OK);
+        return new ResponseEntity<>(player.get(), HttpStatus.OK);
     }
 
 }

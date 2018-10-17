@@ -8,4 +8,4 @@ insert into account (id, balance, name, player_id) values (1, 53, 'istanbul', 1)
 insert into account (id, balance, name, player_id) values (2, 23, 'izmir', 2);
 insert into account (id, balance, name, player_id) values (3, 44.23, 'rize', 1);
 insert into account (id, balance, name, player_id) values (4, 81, 'ankara', 3);
-insert into account (id, balance, name, player_id) values (5, 14, 'istanbul', 4);
+insert into account (id, balance, name, player_id) values (5, 14, 'stockholm', 4);

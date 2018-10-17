@@ -21,10 +21,10 @@ import java.util.Optional;
 public class AccountController {
 
     @Autowired
-    AccountService accountService;
+    private AccountService accountService;
 
     @Autowired
-    PlayerService playerService;
+    private PlayerService playerService;
 
     @PostMapping(path = "/addAccountToPlayer")
     public ResponseEntity<Account> addAccountToPlayer(@RequestBody AccountDTO accountDTO) {
@@ -57,7 +57,7 @@ public class AccountController {
             throw new AccountNotFoundException();
         }
 
-        return new ResponseEntity<Account>(account.get(), HttpStatus.OK);
+        return new ResponseEntity<>(account.get(), HttpStatus.OK);
     }
 
     @DeleteMapping(path = "/{accountId}")
@@ -81,7 +81,7 @@ public class AccountController {
         else {
             throw new AccountNotFoundException();
         }
-        return new ResponseEntity<Account>(account.get(), HttpStatus.OK);
+        return new ResponseEntity<>(account.get(), HttpStatus.OK);
     }
 
     @GetMapping(path = "/credit")
@@ -93,7 +93,7 @@ public class AccountController {
         else {
             throw new AccountNotFoundException();
         }
-        return new ResponseEntity<Account>(account.get(), HttpStatus.OK);
+        return new ResponseEntity<>(account.get(), HttpStatus.OK);
     }
 
 }
