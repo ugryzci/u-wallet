@@ -13,16 +13,19 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -52,9 +55,14 @@ public class AccountControllerTest {
 
     @Test
     public void addAccountToPlayerTest() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post("/account/addAccountToPlayer/").
+
+        when(playerService.findById(1L)).thenReturn(Optional.of(new Player()));
+
+        mockMvc.perform(post("/account/addAccountToPlayer/").
                 contentType(MediaType.APPLICATION_JSON).content("{\"balance\": 23, \"name\": \"ugryzci\" , \"playerId\": 1}")
-                .accept(MediaType.APPLICATION_JSON)).andExpect(status().is4xxClientError());
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.name", is("ugryzci")));
     }
 
     @Test
@@ -79,6 +87,10 @@ public class AccountControllerTest {
         given(accountService.findAll()).willReturn(accountList);
 
         mockMvc.perform(get(url + "/list")
-                .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)));
+
+
     }
 }

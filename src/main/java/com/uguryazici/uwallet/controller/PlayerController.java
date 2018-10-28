@@ -46,9 +46,7 @@ public class PlayerController {
     public ResponseEntity<Player> getPlayertById(@PathVariable long playerId) {
         Optional<Player> player = playerService.findById(playerId);
 
-        if (!player.isPresent()) {
-            throw new PlayerNotFoundException();
-        }
+        player.orElseThrow(PlayerNotFoundException::new);
 
         return new ResponseEntity<>(player.get(), HttpStatus.OK);
     }

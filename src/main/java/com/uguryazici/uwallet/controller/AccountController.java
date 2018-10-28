@@ -33,13 +33,11 @@ public class AccountController {
         account.setBalance(accountDTO.getBalance());
         Optional<Player> player = playerService.findById(accountDTO.getPlayerId());
 
-        if (player.isPresent()) {
-            account.setPlayer(player.get());
-            accountService.save(account);
-            return new ResponseEntity<>(account, HttpStatus.CREATED);
-        } else {
-            throw new PlayerNotFoundException();
-        }
+        player.orElseThrow(PlayerNotFoundException::new);
+
+        account.setPlayer(player.get());
+        accountService.save(account);
+        return new ResponseEntity<>(account, HttpStatus.CREATED);
     }
 
     @GetMapping(path = "/list")
@@ -53,9 +51,7 @@ public class AccountController {
     public ResponseEntity<Account> getAccountById(@PathVariable long accountId) {
         Optional<Account> account = accountService.findById(accountId);
 
-        if (!account.isPresent()) {
-            throw new AccountNotFoundException();
-        }
+        account.orElseThrow(AccountNotFoundException::new);
 
         return new ResponseEntity<>(account.get(), HttpStatus.OK);
     }
@@ -72,27 +68,19 @@ public class AccountController {
         return new ResponseEntity<>("Account Deleted.",HttpStatus.OK);
     }
 
-    @GetMapping(path = "/debit")
+    @PostMapping(path = "/debit")
     public ResponseEntity<Account> debit(@RequestParam("accountId") Long accountId, @RequestParam("amount") BigDecimal amount) {
         Optional<Account> account = accountService.findById(accountId);
-        if (account.isPresent()) {
-            accountService.makeDebit(account.get(), amount);
-        }
-        else {
-            throw new AccountNotFoundException();
-        }
+        account.orElseThrow(AccountNotFoundException::new);
+        accountService.makeDebit(account.get(), amount);
         return new ResponseEntity<>(account.get(), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/credit")
-    public ResponseEntity<Account> credit(@RequestParam("accountId") Long accountId, @RequestParam("amount") BigDecimal amount) throws Exception {
+    @PostMapping(path = "/credit")
+    public ResponseEntity<Account> credit(@RequestParam("accountId") Long accountId, @RequestParam("amount") BigDecimal amount) {
         Optional<Account> account = accountService.findById(accountId);
-        if (account.isPresent()) {
-            accountService.makeCredit(account.get(), amount);
-        }
-        else {
-            throw new AccountNotFoundException();
-        }
+        account.orElseThrow(AccountNotFoundException::new);
+        accountService.makeCredit(account.get(), amount);
         return new ResponseEntity<>(account.get(), HttpStatus.OK);
     }
 
